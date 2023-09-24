@@ -4,9 +4,9 @@ import {
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
-} from "typeorm";
-import { PhotoMetadata } from "./PhotoMetadata";
-import { User } from "./User";
+} from 'typeorm';
+import { PhotoMetadata } from './PhotoMetadata';
+import { User } from './User';
 
 @Entity()
 export class Photo {
@@ -18,7 +18,7 @@ export class Photo {
   })
   name: string;
 
-  @Column("text")
+  @Column('text')
   description: string;
 
   @Column()
@@ -27,7 +27,7 @@ export class Photo {
   @Column()
   filename: string;
 
-  @Column("double")
+  @Column('double')
   views: number;
 
   @Column()
