@@ -1,18 +1,18 @@
-import { DataSource } from "typeorm";
-import { User } from "./entity/User";
-import "reflect-metadata";
-import { Photo } from "./entity/Photo";
-import { PhotoMetadata } from "./entity/PhotoMetadata";
-import { Question } from "./entity/Question";
-import { Category } from "./entity/Category";
+import { DataSource } from 'typeorm';
+import { User } from './entity/User';
+import 'reflect-metadata';
+import { Photo } from './entity/Photo';
+import { PhotoMetadata } from './entity/PhotoMetadata';
+import { Question } from './entity/Question';
+import { Category } from './entity/Category';
 
 const AppDataSource = new DataSource({
-  type: "mysql",
-  host: "localhost",
+  type: 'mysql',
+  host: 'localhost',
   port: 3306,
-  username: "root",
-  password: "soh",
-  database: "typeormTest",
+  username: 'root',
+  password: 'soh',
+  database: 'typeormTest',
   entities: [User, Photo, PhotoMetadata, Question, Category],
   synchronize: true,
   logging: true,
@@ -20,7 +20,7 @@ const AppDataSource = new DataSource({
 
 AppDataSource.initialize()
   .then(async () => {
-    console.log("Database has been initialized");
+    console.log('Database has been initialized');
     // insert data by repository
     // const photo = new Photo();
     // photo.name = "Me and Bears";
@@ -134,17 +134,15 @@ AppDataSource.initialize()
     // });
     // console.log(users);
 
-
-
     // ✅soft delete relationship with cascade
     // const category1 = new Category()
     // category1.name = "animals2"
     // // await AppDataSource.manager.save(category1)
-    
+
     // const category2 = new Category()
     // category2.name = "zoo2"
     // // await AppDataSource.manager.save(category2)
-    
+
     // const question = new Question()
     // question.title = "dogs"
     // question.text = "who let the dogs out?"
@@ -157,11 +155,13 @@ AppDataSource.initialize()
     // //이 경우에는 cascade:true 속성이 Question에 적용되어있기 때문에 150줄에서 question을 저장하면
     // //category에도 두개의 카테고리 데이터가 자동으로 저장된다.
     // console.log("soft removed question")
-   
+
     // ✅load many-to-many relations by using querybuilder
     const questions = await AppDataSource.getRepository(Question)
-.createQueryBuilder("question").leftJoinAndSelect("question.categories", "category").getMany();
-console.log(questions)
+      .createQueryBuilder('question')
+      .leftJoinAndSelect('question.categories', 'category')
+      .getMany();
+    console.log(questions);
   })
   .catch((error) => console.log(error));
 
