@@ -28,10 +28,10 @@ export class BirthVO extends ValueObject<string> {
       currentMonth < birthMonth ||
       (currentMonth === birthMonth && currentDay < birthDay)
     ) {
-      // The birthday hasn't occurred yet this year
+      // The birthday hasn't passed yet this year
       return currentYear - birthYear - 1;
     } else {
-      // The birthday has already occurred this year
+      // The birthday has already passed this year
       return currentYear - birthYear;
     }
   }

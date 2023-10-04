@@ -4,7 +4,7 @@ import {
   OrmEntityProps,
   OrmMapper,
 } from '../../../../libs/ddd/infrastructure/database/base-classes/orm-mapper.base';
-import { UserEntity, UserProps } from '../domain/User';
+import { UserEntity, UserProps } from '../domain/user.entity';
 import { BirthVO } from '../domain/value-object/birth.vo';
 import { NicknameVO } from '../domain/value-object/nick-name.vo';
 import type { UserOrmEntity } from './user.orm-entity';

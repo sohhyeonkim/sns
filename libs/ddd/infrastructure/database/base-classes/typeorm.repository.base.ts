@@ -20,13 +20,13 @@ export type WhereCondition<OrmEntity> =
 export abstract class TypeormRepositoryBase<
   Entity extends AggregateRoot<unknown>,
   EntityProps,
-  OrmEntity extends ObjectLiteral,
+  OrmEntity extends ObjectLiteral
 > implements RepositoryPort<Entity, EntityProps>
 {
   protected constructor(
     protected readonly repository: Repository<OrmEntity>,
     protected readonly mapper: OrmMapper<Entity, OrmEntity>,
-    protected readonly logger: LoggerService,
+    protected readonly logger: LoggerService
   ) {}
 
   /**
@@ -38,7 +38,7 @@ export abstract class TypeormRepositoryBase<
   protected tableName = this.repository.metadata.tableName;
 
   protected abstract prepareQuery(
-    params: QueryParams<EntityProps>,
+    params: QueryParams<EntityProps>
   ): WhereCondition<OrmEntity>;
 
   async save(entity: Entity): Promise<Entity> {
@@ -48,10 +48,10 @@ export abstract class TypeormRepositoryBase<
     await DomainEvents.publishEvents(
       entity.id,
       this.logger,
-      this.correlationId,
+      this.correlationId
     );
     this.logger.debug?.(
-      `[${entity.constructor.name}] persisted ${entity.id.value}`,
+      `[${entity.constructor.name}] persisted ${entity.id.value}`
     );
 
     return this.mapper.toDomainEntity(result);
@@ -66,18 +66,18 @@ export abstract class TypeormRepositoryBase<
     const result = await this.repository.save(ormEntities);
     await Promise.all(
       entities.map((entity) =>
-        DomainEvents.publishEvents(entity.id, this.logger, this.correlationId),
-      ),
+        DomainEvents.publishEvents(entity.id, this.logger, this.correlationId)
+      )
     );
     this.logger.debug?.(
-      `[${entities}]: persisted ${entities.map((entity) => entity.id)}`,
+      `[${entities}]: persisted ${entities.map((entity) => entity.id)}`
     );
 
     return result.map((entity) => this.mapper.toDomainEntity(entity));
   }
 
   async findOne(
-    params: QueryParams<EntityProps> = {},
+    params: QueryParams<EntityProps> = {}
   ): Promise<Entity | undefined> {
     const where = this.prepareQuery(params);
     const found = await this.repository.findOne({
@@ -150,10 +150,10 @@ export abstract class TypeormRepositoryBase<
     await DomainEvents.publishEvents(
       entity.id,
       this.logger,
-      this.correlationId,
+      this.correlationId
     );
     this.logger.debug?.(
-      `[${entity.constructor.name}] deleted ${entity.id.value}`,
+      `[${entity.constructor.name}] deleted ${entity.id.value}`
     );
 
     return entity;
