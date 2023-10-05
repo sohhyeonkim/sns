@@ -10,7 +10,8 @@ export const routesV1 = {
 
   user: {
     root: {
-      create: `${userRoot}`,
+      create: `${userRoot}/sign-up`,
+      login: `${userRoot}/login`,
     },
   },
 };

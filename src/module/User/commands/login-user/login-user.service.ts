@@ -1,49 +1,37 @@
 import { CommandHandler } from '@nestjs/cqrs';
 import { CommandHandlerBase } from '../../../../../libs/ddd/domain/base-classes/command-handler.base';
 import { UnitOfWork } from '../../../../unit-of-work/unit-of-work';
-import { CreateUserCommand } from './create-user.command';
 import type { Result } from 'oxide.ts/dist';
-import { UserEntity } from '../../domain/user.entity';
 import { UserRepositoryPort } from '../../database/user.repository.port';
 import { Err, Ok } from 'oxide.ts/dist';
-import { ConflictException } from '@nestjs/common';
+import { UnauthorizedException } from '@nestjs/common';
+import { LoginUserCommand } from './login-user.command';
 
-@CommandHandler(CreateUserCommand)
-export class CreateUserService extends CommandHandlerBase {
+@CommandHandler(LoginUserCommand)
+export class LoginUserService extends CommandHandlerBase {
   constructor(protected readonly unitOfWork: UnitOfWork) {
     super(unitOfWork);
   }
 
-  async handle(command: CreateUserCommand): Promise<
+  async handle(command: LoginUserCommand): Promise<
     Result<
       {
-        user: UserEntity;
+        isLogin: boolean;
       },
       Error
     >
   > {
-    const { email, plainPassword, birth, nickname, gender, correlationId } =
-      command;
+    const { email, plainPassword, correlationId } = command;
     const userRepository: UserRepositoryPort =
       this.unitOfWork.getUserRepository(correlationId);
 
     const foundUser = await userRepository.findOneByEmailOrReturn(email);
-    if (foundUser) {
-      return Err(new ConflictException('user exists'));
+    if (!foundUser?.validateHash(plainPassword)) {
+      return Err(new UnauthorizedException('check email or password'));
     }
 
-    const createdUser = UserEntity.create({
-      email,
-      plainPassword,
-      birth,
-      nickname,
-      gender,
-    });
-
-    await userRepository.save(createdUser);
-
     return Ok({
-      user: createdUser,
+      isLogin: true,
     });
   }
 }

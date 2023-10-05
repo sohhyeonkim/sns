@@ -56,7 +56,7 @@ export class UserEntity extends AggregateRoot<UserProps> {
     return hashSync(plainPassword, 10);
   }
 
-  private validateHash(plainPassword: string): Promise<boolean> {
+  validateHash(plainPassword: string): Promise<boolean> {
     return compare(plainPassword, this.props.hashedPassword);
   }
 }
