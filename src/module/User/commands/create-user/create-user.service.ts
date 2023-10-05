@@ -24,7 +24,7 @@ export class CreateUserService extends CommandHandlerBase {
   > {
     const {
       email,
-      password,
+      plainPassword,
       birth,
       nickname,
       gender,
@@ -36,13 +36,13 @@ export class CreateUserService extends CommandHandlerBase {
       this.unitOfWork.getUserRepository(correlationId);
 
     const foundUser = await userRepository.findOneByEmailOrReturn(email);
-    if (!foundUser) {
+    if (foundUser) {
       return Err(new ConflictException('user exists'));
     }
 
     const createdUser = UserEntity.create({
       email,
-      password,
+      plainPassword,
       birth,
       nickname,
       gender,

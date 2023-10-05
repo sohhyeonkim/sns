@@ -33,9 +33,9 @@ export class CreateUserDto implements CreateUserProps {
   gender: Gender;
 
   @ApiProperty({
-    description: 'Manager login password',
+    description: 'user password',
   })
   @Length(8, 16, { message: '암호는 8~16자 길이어야 합니다.' })
   @IsString()
-  readonly password: string;
+  readonly plainPassword: string;
 }

@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { QueryParams } from '../../../../libs/ddd/domain/ports/repository.ports';
@@ -30,9 +30,10 @@ export class UserRepository
   }
 
   async findOneByEmailOrReturn(email: string) {
-    return await this.findOne({
+    const found = await this.findOne({
       email,
     });
+    return found;
   }
 
   // Used to construct a query

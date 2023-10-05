@@ -9,7 +9,7 @@ import { hashSync, compare } from 'bcrypt';
 
 export interface CreateUserProps {
   email: string;
-  password: string;
+  plainPassword: string;
   birth: string;
   nickname: string;
   gender: Gender;
@@ -17,7 +17,7 @@ export interface CreateUserProps {
 
 export interface UserProps {
   email: string;
-  password: string;
+  hashedPassword: string;
   birth: BirthVO;
   nickname: NicknameVO;
   gender: Gender;
@@ -34,7 +34,7 @@ export class UserEntity extends AggregateRoot<UserProps> {
     const nickname = new NicknameVO(create.nickname);
     const props: UserProps = {
       email: create.gender,
-      password: this.hash(create.password),
+      hashedPassword: this.createHash(create.plainPassword),
       birth,
       nickname,
       gender: create.gender,
@@ -52,11 +52,11 @@ export class UserEntity extends AggregateRoot<UserProps> {
     throw new Error('validation failed');
   }
 
-  private static hash(plainPassword: string): string {
+  private static createHash(plainPassword: string): string {
     return hashSync(plainPassword, 10);
   }
 
   private validateHash(plainPassword: string): Promise<boolean> {
-    return compare(plainPassword, this.props.password);
+    return compare(plainPassword, this.props.hashedPassword);
   }
 }

@@ -15,7 +15,7 @@ export class UserOrmMapper extends OrmMapper<UserEntity, UserOrmEntity> {
 
     const ormProps: OrmEntityProps<UserOrmEntity> = {
       email: props.email,
-      password: props.password,
+      hashedPassword: props.hashedPassword,
       nickname: props.nickname.unpack(),
       gender: props.gender,
       birth: props.birth.unpack(),
@@ -29,7 +29,7 @@ export class UserOrmMapper extends OrmMapper<UserEntity, UserOrmEntity> {
     const id = new UUID(ormEntity.id);
     const props: UserProps = {
       email: ormEntity.email,
-      password: ormEntity.password,
+      hashedPassword: ormEntity.hashedPassword,
       nickname: new NicknameVO(ormEntity.nickname),
       birth: new BirthVO(ormEntity.birth),
       gender: ormEntity.gender,

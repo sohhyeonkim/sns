@@ -16,7 +16,7 @@ export class UserOrmEntity extends TypeormEntityBase {
   email: string;
 
   @Column()
-  password: string;
+  hashedPassword: string;
 
   @Column()
   birth: string;

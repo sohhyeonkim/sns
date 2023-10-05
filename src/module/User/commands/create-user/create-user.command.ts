@@ -11,7 +11,7 @@ export class CreateUserCommand extends Command {
 
   readonly email: string;
 
-  readonly password: string;
+  readonly plainPassword: string;
 
   readonly birth: string;
 
